@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Parisienne&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff5f7;
+            font-family: 'Dancing Script', cursive;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            background-color: #ffb6c1;
+            border-radius: 5px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.6s ease;
+            z-index: 2;
+            left: calc(50% - 150px);
+        }
+
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff8fab;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: all 0.3s ease 0.2s;
+            z-index: 3;
+        }
+
+        .envelope.open {
+            left: 20px;
+            transform: scale(0.8);
+        }
+
+        .envelope.open:before {
+            transform: rotateX(180deg);
+        }
+
+        .letter {
+            position: absolute;
+            width: 320px;
+            height: 420px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .letter.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter-content {
+            color: #d23669;
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-family: 'Parisienne', cursive;
+            color: #ff6b8b;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            color: #ff8fab;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .instructions.hide {
+            opacity: 0;
+        }
+
+        .seal {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6b8b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 4;
+            transition: all 0.3s ease;
+        }
+
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            color: #ff6b8b;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-control button {
+            background-color: #ff6b8b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .music-control button:hover {
+            background-color: #ff8fab;
+            transform: scale(1.1);
+        }
+
+        audio {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .envelope.open {
+                left: 10px;
+                transform: scale(0.7);
+            }
+            
+            .letter {
+                width: 280px;
+                height: 380px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="music-control">
+            <button id="musicToggle">♫</button>
+            <span>Music</span>
+        </div>
+        
+        <audio id="backgroundMusic" loop>
+            <!-- Replace with your music file -->
+            <source src="For Now.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <div class="envelope">
+            <div class="seal">❤</div>
+        </div>
+        <div class="letter">
+            <div class="letter-content">
+                <h1>Sayangg,</h1>
+                <p>From the moment I met you, my heart knew it had found its home.</p>
+                <p>Your smile brightens my darkest days, and your love fills my life with joy.</p>
+                <p>Every day with you is a blessing I cherish deeply.</p>
+                <p>I promise to love you today, tomorrow, and forever.</p>
+                <p>Forever yours,</p>
+                <p>Your (Future) Husband</p>
+            </div>
+        </div>
+        <div class="instructions">Click the envelope to open</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const envelope = document.querySelector('.envelope');
+            const letter = document.querySelector('.letter');
+            const instructions = document.querySelector('.instructions');
+            const body = document.body;
+            const music = document.getElementById('backgroundMusic');
+            const musicToggle = document.getElementById('musicToggle');
+            let isOpen = false;
+            let isMusicPlaying = false;
+            
+            // Set music volume
+            music.volume = 0.3;
+            
+            envelope.addEventListener('click', function() {
+                isOpen = !isOpen;
+                
+                if (isOpen) {
+                    this.classList.add('open');
+                    instructions.classList.add('hide');
+                    setTimeout(() => {
+                        letter.classList.add('show');
+                        createHearts();
+                        // Play music when envelope opens
+                        if (isMusicPlaying) {
+                            music.play().catch(e => console.log("Auto-play prevented:", e));
+                        }
+                    }, 300);
+                } else {
+                    letter.classList.remove('show');
+                    setTimeout(() => {
+                        this.classList.remove('open');
+                        instructions.classList.remove('hide');
+                        // Pause music when envelope closes
+                        music.pause();
+                    }, 500);
+                }
+            });
+            
+            // Music toggle control
+            musicToggle.addEventListener('click', function() {
+                isMusicPlaying = !isMusicPlaying;
+                if (isMusicPlaying) {
+                    music.play().catch(e => console.log("Play prevented:", e));
+                    this.textContent = '♫';
+                    this.style.backgroundColor = '#ff6b8b';
+                } else {
+                    music.pause();
+                    this.textContent = '♫';
+                    this.style.backgroundColor = '#ffb3c6';
+                }
+            });
+            
+            function createHearts() {
+                const colors = ['#ff6b8b', '#ff8fab', '#ffb3c6', '#ffccd5'];
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.classList.add('heart');
+                        heart.innerHTML = '❤';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                        
+                        body.appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 4000);
+                    }, i * 200);
+                }
+            }
+            
+            // Enable audio after first user interaction
+            document.body.addEventListener('click', function firstInteraction() {
+                // Try to play music (muted at first if needed)
+                music.play().then(() => {
+                    music.pause();
+                    isMusicPlaying = false;
+                    musicToggle.textContent = '♫';
+                }).catch(e => {
+                    console.log("Initial play prevented:", e);
+                });
+                
+                // Remove this event listener after first interaction
+                document.body.removeEventListener('click', firstInteraction);
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>
